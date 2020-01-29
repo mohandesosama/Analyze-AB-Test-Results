@@ -158,9 +158,10 @@ df.query('group=="control" and landing_page == "new_page"')
 df.query('group=="treatment" and landing_page == "old_page"')
 df.head()
 ```
-
-
-
+you can also use
+```python
+df.groupby(['group','landing_page']).size()
+```
 
 <div>
 <table border="1" class="dataframe">
@@ -249,7 +250,11 @@ a. Now use the answer to the quiz to create a new dataset that meets the specifi
 df2 = df.query("group == 'control' and landing_page == 'old_page'")
 df2 = df2.append(df.query("group == 'treatment' and landing_page == 'new_page'"))
 ```
-
+You can also use
+```python
+df2=pd.concat([df2.query('group=="treatment" & landing_page=="new_page"'),
+          df2.query('group=="control" & landing_page=="old_page"')])
+```
 
 ```python
 # Double Check all of the correct rows were removed - this should be 0
@@ -285,7 +290,10 @@ b. There is one **user_id** repeated in **df2**.  What is it?
 ```python
 df2[df2['user_id'].duplicated()]
 ```
-
+you can also use 
+```python
+df2[df2.duplicated(subset='user_id') == True]
+```
 
 
 
@@ -322,7 +330,10 @@ c. What is the row information for the repeat **user_id**?
 ```python
 df2[df2['user_id'] == 773192]
 ```
-
+You can also use
+```python
+df2[df2.duplicated(subset='user_id') == True]
+```
 
 
 
@@ -367,7 +378,10 @@ d. Remove **one** of the rows with a duplicate **user_id**, but keep your datafr
 ```python
 df2 = df2.drop(1899)
 ```
-
+You can also use
+```python
+df2.drop_duplicates(subset='user_id',inplace=True)
+```
 `4.` Use **df2** in the cells below to answer the quiz questions related to **Quiz 4** in the classroom.
 
 a. What is the probability of an individual converting regardless of the page they receive?
